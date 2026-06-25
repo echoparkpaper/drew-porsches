@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Car } from '@/types';
+import { CATALOG, LINES, getModelById, startYear } from '@/lib/porsche-catalog';
 
 interface CarFormProps {
   initialData?: Car;
+  defaultModelId?: string;
   onSubmit?: (data: Partial<Car>) => Promise<void>;
   isLoading?: boolean;
 }
@@ -14,12 +16,14 @@ const labelCls = 'eyebrow text-[#5b5b5b] block mb-3';
 const inputCls =
   'w-full border-b border-[#e3e3e3] py-2 text-[#0a0a0a] placeholder-[#b8b8b8] focus:outline-none focus:border-[#0a0a0a] transition-colors bg-transparent';
 
-export function CarForm({ initialData, onSubmit, isLoading = false }: CarFormProps) {
+export function CarForm({ initialData, defaultModelId, onSubmit, isLoading = false }: CarFormProps) {
   const router = useRouter();
+  const seed = !initialData && defaultModelId ? getModelById(defaultModelId) : undefined;
+  const [selectedModel, setSelectedModel] = useState(seed?.id ?? '');
   const [formData, setFormData] = useState({
-    make: initialData?.make || '',
-    model: initialData?.model || '',
-    year: initialData?.year || new Date().getFullYear(),
+    make: initialData?.make || (seed ? 'Porsche' : ''),
+    model: initialData?.model || seed?.name || '',
+    year: initialData?.year || (seed ? startYear(seed.years) : new Date().getFullYear()),
     price: initialData?.price || 0,
     mileage: initialData?.mileage || 0,
     condition: initialData?.condition || 'good',
@@ -27,6 +31,18 @@ export function CarForm({ initialData, onSubmit, isLoading = false }: CarFormPro
     valuation: initialData?.valuation || 0,
   });
   const [error, setError] = useState('');
+
+  const handleModelSelect = (id: string) => {
+    setSelectedModel(id);
+    const m = getModelById(id);
+    if (!m) return;
+    setFormData((prev) => ({
+      ...prev,
+      make: 'Porsche',
+      model: m.name,
+      year: startYear(m.years),
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -82,6 +98,29 @@ export function CarForm({ initialData, onSubmit, isLoading = false }: CarFormPro
           <p className="text-sm text-[#b00017]">{error}</p>
         </div>
       )}
+
+      <div className="bg-[#fafafa] border border-[#e3e3e3] p-6">
+        <label className={labelCls}>Auto-fill from the Library</label>
+        <select
+          value={selectedModel}
+          onChange={(e) => handleModelSelect(e.target.value)}
+          className={`${inputCls} cursor-pointer`}
+        >
+          <option value="">Select a model…</option>
+          {LINES.map((line) => (
+            <optgroup key={line} label={line}>
+              {CATALOG.filter((m) => m.line === line).map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name} · {m.years}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <p className="mt-3 text-sm text-[#5b5b5b]">
+          Choose a model to fill in make, model and year — then add your car’s mileage, price and condition below.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
         <div>

@@ -31,7 +31,13 @@ export default async function DashboardPage() {
             DREW<span className="text-[#d5001c]">.</span>PORSCHES
           </Link>
           <div className="flex items-center gap-6">
-            <span className="hidden sm:inline text-sm text-[#5b5b5b]">{session.user.email}</span>
+            <Link href="/dashboard" className="eyebrow text-[#0a0a0a]">
+              Garage
+            </Link>
+            <Link href="/library" className="eyebrow text-[#5b5b5b] hover:text-[#0a0a0a] transition-colors">
+              Library
+            </Link>
+            <span className="hidden md:inline text-sm text-[#5b5b5b]">{session.user.email}</span>
             <a href="/api/auth/signout" className="eyebrow text-[#0a0a0a] hover:text-[#d5001c] transition-colors">
               Sign out
             </a>
