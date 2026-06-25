@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
+import { ensureSchema } from '@/lib/schema';
 import Link from 'next/link';
 
 const fmtCurrency = (n: number) =>
@@ -14,6 +15,7 @@ export default async function DashboardPage() {
     redirect('/auth/login');
   }
 
+  await ensureSchema();
   const cars = await db.getCars(session.user.id);
   const primaryPhotos = await db.getPrimaryPhotoIds(cars.map((c) => c.id));
 

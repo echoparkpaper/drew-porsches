@@ -141,16 +141,21 @@ export const db = {
   // Latest photo id for each of the given cars (for collection thumbnails).
   async getPrimaryPhotoIds(carIds: string[]): Promise<Record<string, string>> {
     if (carIds.length === 0) return {};
-    const result = await pool.query(
-      `SELECT DISTINCT ON (car_id) car_id, id
-       FROM car_photos
-       WHERE car_id = ANY($1) AND data IS NOT NULL
-       ORDER BY car_id, uploaded_at DESC`,
-      [carIds]
-    );
-    const map: Record<string, string> = {};
-    for (const row of result.rows) map[row.car_id] = row.id;
-    return map;
+    try {
+      const result = await pool.query(
+        `SELECT DISTINCT ON (car_id) car_id, id
+         FROM car_photos
+         WHERE car_id = ANY($1) AND data IS NOT NULL
+         ORDER BY car_id, uploaded_at DESC`,
+        [carIds]
+      );
+      const map: Record<string, string> = {};
+      for (const row of result.rows) map[row.car_id] = row.id;
+      return map;
+    } catch {
+      // Schema not yet migrated (data column missing) — degrade gracefully.
+      return {};
+    }
   },
 
   // Verifies the photo belongs to a car owned by the user, then deletes it.

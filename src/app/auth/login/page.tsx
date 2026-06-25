@@ -5,9 +5,9 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-// Vintage air-cooled 911 in Martini livery (Unsplash, licensed for free use).
+// Red classic 911 (930-era), full car (Unsplash, licensed for free use).
 const HERO =
-  'https://images.unsplash.com/photo-1566238432098-35fc2fa3d908?auto=format&fit=crop&w=1600&q=80';
+  'https://images.unsplash.com/photo-1588258219511-64eb629cb833?auto=format&fit=crop&w=1600&q=85';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,18 +38,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Visual panel */}
-      <div className="relative hidden lg:block">
+      <div className="relative hidden lg:block bg-[#0a0a0a]">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${HERO})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/40" />
         <div className="relative h-full flex flex-col justify-between p-12 text-white">
           <div className="wordmark text-xl">
             The Lucurell Collection
           </div>
           <div>
-            <p className="eyebrow text-white/70 mb-3">The Collection</p>
+            <p className="eyebrow text-white/70 mb-3">Porsche.</p>
             <h1 className="text-4xl font-light leading-tight max-w-md">
               There is no substitute.
             </h1>
