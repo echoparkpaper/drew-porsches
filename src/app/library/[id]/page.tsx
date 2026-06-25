@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { getModelById, CATALOG, startYear } from '@/lib/porsche-catalog';
+import { getModelById, CATALOG, getModelImage } from '@/lib/porsche-catalog';
 
 export default async function ModelDetailPage({
   params,
@@ -27,6 +27,7 @@ export default async function ModelDetailPage({
   );
 
   const addHref = `/cars/new?model=${encodeURIComponent(model.id)}`;
+  const heroImg = getModelImage(model);
 
   return (
     <div className="min-h-screen bg-white">
@@ -43,11 +44,11 @@ export default async function ModelDetailPage({
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] text-white overflow-hidden">
-        {model.image ? (
+        {heroImg ? (
           <>
             <div
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${model.image})` }}
+              style={{ backgroundImage: `url(${heroImg})` }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/40" />
           </>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { PorscheModel } from '@/lib/porsche-catalog';
+import { PorscheModel, getModelImage } from '@/lib/porsche-catalog';
 
 interface Props {
   models: PorscheModel[];
@@ -75,29 +75,50 @@ export function LibraryBrowser({ models, lines, categories, eras }: Props) {
             <section key={groupLine}>
               <h2 className="text-2xl font-light tracking-tight mb-8">{groupLine}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#e3e3e3] border border-[#e3e3e3]">
-                {items.map((m) => (
-                  <Link
-                    key={m.id}
-                    href={`/library/${m.id}`}
-                    className="group bg-white p-7 hover:bg-[#0a0a0a] transition-colors duration-300"
-                  >
-                    <div className="flex items-baseline justify-between mb-4">
-                      <span className="eyebrow text-[#d5001c]">{m.generation}</span>
-                      <span className="text-sm text-[#5b5b5b] group-hover:text-white/60 transition-colors">
-                        {m.years}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-medium tracking-tight group-hover:text-white transition-colors">
-                      {m.name}
-                    </h3>
-                    <p className="mt-3 text-sm text-[#5b5b5b] group-hover:text-white/70 transition-colors">
-                      {m.engine}
-                    </p>
-                    <p className="mt-1 text-sm text-[#5b5b5b] group-hover:text-white/70 transition-colors">
-                      {m.power}
-                    </p>
-                  </Link>
-                ))}
+                {items.map((m) => {
+                  const image = getModelImage(m);
+                  return (
+                    <Link
+                      key={m.id}
+                      href={`/library/${m.id}`}
+                      className="group bg-white hover:bg-[#0a0a0a] transition-colors duration-300"
+                    >
+                      <div className="car-media relative aspect-[16/10] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] overflow-hidden">
+                        {image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={image}
+                            alt={m.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-5xl font-thin text-white/10 select-none">
+                              {m.line}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-7">
+                        <div className="flex items-baseline justify-between mb-4">
+                          <span className="eyebrow text-[#d5001c]">{m.generation}</span>
+                          <span className="text-sm text-[#5b5b5b] group-hover:text-white/60 transition-colors">
+                            {m.years}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-medium tracking-tight group-hover:text-white transition-colors">
+                          {m.name}
+                        </h3>
+                        <p className="mt-3 text-sm text-[#5b5b5b] group-hover:text-white/70 transition-colors">
+                          {m.engine}
+                        </p>
+                        <p className="mt-1 text-sm text-[#5b5b5b] group-hover:text-white/70 transition-colors">
+                          {m.power}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </section>
           ))}

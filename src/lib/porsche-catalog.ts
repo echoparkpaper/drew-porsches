@@ -33,9 +33,43 @@ export interface PorscheModel {
 const img = (id: string) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
 
-// Verified Unsplash photography (free-to-use license), confirmed by eye.
-const IMG_CLASSIC_911 = img('photo-1566238432098-35fc2fa3d908'); // vintage Martini air-cooled 911
-const IMG_993 = img('photo-1609903730357-fc7951f05910'); // black 993-era 911
+// Verified Unsplash photography (free-to-use license), each confirmed by eye to
+// match the car. Keyed by model id; lines without a confident match render the
+// typographic treatment instead.
+const IMG = {
+  classic911: img('photo-1566238432098-35fc2fa3d908'), // Martini vintage air-cooled 911
+  red930: img('photo-1588258219511-64eb629cb833'), // red 930-era 911
+  black964: img('photo-1601465621041-643db9cc051d'), // black 964
+  black993: img('photo-1609903730357-fc7951f05910'), // black 993
+  modern911: img('photo-1701806244887-391677f29718'), // white 992 GT3 RS
+  panamera: img('photo-1611859266720-147cc87658f1'), // silver Panamera GTS
+  taycan: img('photo-1618213221550-c32da08997db'), // silver Taycan
+  cayenne: img('photo-1699325974549-fd06639650aa'), // grey Cayenne Coupé
+  cayman: img('photo-1616019070394-6bb08d12e956'), // white Cayman GT4
+};
+
+const MODEL_IMAGES: Record<string, string> = {
+  '911-classic': IMG.classic911,
+  '911-g': IMG.red930,
+  '930-turbo': IMG.red930,
+  '964': IMG.black964,
+  '993': IMG.black993,
+  '991': IMG.modern911,
+  '992': IMG.modern911,
+  'panamera-970': IMG.panamera,
+  'panamera-971': IMG.panamera,
+  taycan: IMG.taycan,
+  'cayenne-955': IMG.cayenne,
+  'cayenne-958': IMG.cayenne,
+  'cayenne-9ya': IMG.cayenne,
+  'cayman-987': IMG.cayman,
+  'cayman-981': IMG.cayman,
+  '718-cayman': IMG.cayman,
+};
+
+/** Verified image for a model, or undefined (→ typographic treatment). */
+export const getModelImage = (m: { id: string; image?: string }): string | undefined =>
+  m.image ?? MODEL_IMAGES[m.id];
 
 export const CATALOG: PorscheModel[] = [
   // ── 356 ──────────────────────────────────────────────
@@ -130,7 +164,6 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa',
     notable:
       'The car that defined Porsche. The original flat-six 911 culminated in the 1973 Carrera RS 2.7, one of the most coveted air-cooled Porsches ever built.',
-    image: IMG_CLASSIC_911,
   },
   {
     id: '911-g',
@@ -161,7 +194,6 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa, Cabriolet',
     notable:
       'The original 911 Turbo — wide hips, a signature "whale tail" and ferocious turbo lag that earned it the nickname "the Widowmaker." An icon of the era.',
-    image: IMG_CLASSIC_911,
   },
   {
     id: '964',
@@ -192,7 +224,6 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa, Cabriolet',
     notable:
       'The last and most beloved air-cooled 911. Its multi-link rear suspension and twin-turbo flagship make it the connoisseur’s choice.',
-    image: IMG_993,
   },
   {
     id: '996',
