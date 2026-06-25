@@ -98,7 +98,7 @@ export const db = {
       'DELETE FROM cars WHERE id = $1 AND user_id = $2',
       [id, userId]
     );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   },
 
   // Photo operations
@@ -124,7 +124,7 @@ export const db = {
       'DELETE FROM car_photos WHERE id = $1 AND car_id = $2',
       [id, carId]
     );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   },
 
   // Maintenance operations
@@ -154,6 +154,6 @@ export const db = {
       'DELETE FROM maintenance_records WHERE id = $1 AND car_id = $2',
       [id, carId]
     );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   },
 };
