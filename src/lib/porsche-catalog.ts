@@ -26,7 +26,16 @@ export interface PorscheModel {
   power: string;
   bodyStyles: string;
   notable: string;
+  /** Optional license-clean (Unsplash) image URL, visually verified to match. */
+  image?: string;
 }
+
+const img = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
+
+// Verified Unsplash photography (free-to-use license), confirmed by eye.
+const IMG_CLASSIC_911 = img('photo-1566238432098-35fc2fa3d908'); // vintage Martini air-cooled 911
+const IMG_993 = img('photo-1609903730357-fc7951f05910'); // black 993-era 911
 
 export const CATALOG: PorscheModel[] = [
   // ── 356 ──────────────────────────────────────────────
@@ -121,6 +130,7 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa',
     notable:
       'The car that defined Porsche. The original flat-six 911 culminated in the 1973 Carrera RS 2.7, one of the most coveted air-cooled Porsches ever built.',
+    image: IMG_CLASSIC_911,
   },
   {
     id: '911-g',
@@ -151,6 +161,7 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa, Cabriolet',
     notable:
       'The original 911 Turbo — wide hips, a signature "whale tail" and ferocious turbo lag that earned it the nickname "the Widowmaker." An icon of the era.',
+    image: IMG_CLASSIC_911,
   },
   {
     id: '964',
@@ -181,6 +192,7 @@ export const CATALOG: PorscheModel[] = [
     bodyStyles: 'Coupé, Targa, Cabriolet',
     notable:
       'The last and most beloved air-cooled 911. Its multi-link rear suspension and twin-turbo flagship make it the connoisseur’s choice.',
+    image: IMG_993,
   },
   {
     id: '996',

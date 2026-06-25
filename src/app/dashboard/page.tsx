@@ -15,6 +15,7 @@ export default async function DashboardPage() {
   }
 
   const cars = await db.getCars(session.user.id);
+  const primaryPhotos = await db.getPrimaryPhotoIds(cars.map((c) => c.id));
 
   const totalValuation = cars.reduce((sum, car) => sum + (Number(car.valuation) || 0), 0);
   const averageMileage =
@@ -90,11 +91,20 @@ export default async function DashboardPage() {
             {cars.map((car) => (
               <Link key={car.id} href={`/cars/${car.id}`} className="group block">
                 <div className="car-media relative aspect-[4/3] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-7xl font-thin text-white/10 select-none">
-                      {car.make.charAt(0)}
-                    </span>
-                  </div>
+                  {primaryPhotos[car.id] ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={`/api/photos/${primaryPhotos[car.id]}`}
+                      alt={`${car.make} ${car.model}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-7xl font-thin text-white/10 select-none">
+                        {car.make.charAt(0)}
+                      </span>
+                    </div>
+                  )}
                   <div className="absolute bottom-0 left-0 right-0 h-px bg-[#d5001c] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                 </div>
                 <div className="pt-5">

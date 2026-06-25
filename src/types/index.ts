@@ -24,8 +24,9 @@ export interface Car {
 export interface CarPhoto {
   id: string;
   car_id: string;
-  photo_url: string;
-  caption?: string;
+  photo_url?: string | null;
+  content_type?: string | null;
+  caption?: string | null;
   uploaded_at: Date;
 }
 

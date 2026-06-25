@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import { DeleteCarButton } from '@/components/delete-car-button';
+import { PhotoManager } from '@/components/photo-manager';
 
 export default async function CarDetailPage({
   params,
@@ -24,6 +25,8 @@ export default async function CarDetailPage({
   }
 
   const maintenance = await db.getMaintenanceRecords(car.id);
+  const photos = await db.getCarPhotos(car.id);
+  const heroPhoto = photos.length > 0 ? photos[photos.length - 1] : null;
   const totalService = maintenance.reduce((s, r) => s + (Number(r.cost) || 0), 0);
 
   return (
@@ -41,12 +44,24 @@ export default async function CarDetailPage({
       </header>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] text-white">
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-[18rem] leading-none font-thin text-white/5 select-none">
-            {car.make.charAt(0)}
-          </span>
-        </div>
+      <section className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] text-white overflow-hidden">
+        {heroPhoto ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/api/photos/${heroPhoto.id}`}
+              alt={`${car.make} ${car.model}`}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30" />
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-[18rem] leading-none font-thin text-white/5 select-none">
+              {car.make.charAt(0)}
+            </span>
+          </div>
+        )}
         <div className="relative max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
           <p className="eyebrow text-[#d5001c] mb-4">{car.year}</p>
           <h1 className="text-4xl lg:text-6xl font-light tracking-tight">
@@ -69,6 +84,10 @@ export default async function CarDetailPage({
             <DeleteCarButton carId={car.id} />
           </div>
         </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 border-b border-[#e3e3e3]">
+        <PhotoManager carId={car.id} photos={photos} />
       </section>
 
       <main className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-1 lg:grid-cols-3 gap-16">

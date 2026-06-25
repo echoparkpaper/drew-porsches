@@ -102,27 +102,64 @@ export const db = {
   },
 
   // Photo operations
+  // Metadata only (never selects the BYTEA blob — keeps listing queries light).
   async getCarPhotos(carId: string): Promise<CarPhoto[]> {
     const result = await pool.query(
-      'SELECT * FROM car_photos WHERE car_id = $1 ORDER BY uploaded_at DESC',
+      'SELECT id, car_id, caption, uploaded_at FROM car_photos WHERE car_id = $1 ORDER BY uploaded_at ASC',
       [carId]
     );
     return result.rows;
   },
 
-  async addPhoto(carId: string, photoUrl: string, caption?: string): Promise<CarPhoto> {
+  async addPhotoBytes(
+    carId: string,
+    data: Buffer,
+    contentType: string,
+    caption?: string
+  ): Promise<{ id: string }> {
     const id = crypto.randomUUID();
-    const result = await pool.query(
-      'INSERT INTO car_photos (id, car_id, photo_url, caption, uploaded_at) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [id, carId, photoUrl, caption || null, new Date()]
+    await pool.query(
+      'INSERT INTO car_photos (id, car_id, data, content_type, caption, uploaded_at) VALUES ($1, $2, $3, $4, $5, $6)',
+      [id, carId, data, contentType, caption || null, new Date()]
     );
-    return result.rows[0];
+    return { id };
   },
 
-  async deletePhoto(id: string, carId: string): Promise<boolean> {
+  // Returns the raw bytes plus the owning user (for access control in the route).
+  async getPhotoBytes(
+    id: string
+  ): Promise<{ data: Buffer; content_type: string; user_id: string } | null> {
     const result = await pool.query(
-      'DELETE FROM car_photos WHERE id = $1 AND car_id = $2',
-      [id, carId]
+      `SELECT p.data, p.content_type, c.user_id
+       FROM car_photos p JOIN cars c ON c.id = p.car_id
+       WHERE p.id = $1`,
+      [id]
+    );
+    return result.rows[0] || null;
+  },
+
+  // Latest photo id for each of the given cars (for collection thumbnails).
+  async getPrimaryPhotoIds(carIds: string[]): Promise<Record<string, string>> {
+    if (carIds.length === 0) return {};
+    const result = await pool.query(
+      `SELECT DISTINCT ON (car_id) car_id, id
+       FROM car_photos
+       WHERE car_id = ANY($1) AND data IS NOT NULL
+       ORDER BY car_id, uploaded_at DESC`,
+      [carIds]
+    );
+    const map: Record<string, string> = {};
+    for (const row of result.rows) map[row.car_id] = row.id;
+    return map;
+  },
+
+  // Verifies the photo belongs to a car owned by the user, then deletes it.
+  async deletePhotoOwned(id: string, userId: string): Promise<boolean> {
+    const result = await pool.query(
+      `DELETE FROM car_photos p
+       USING cars c
+       WHERE p.id = $1 AND p.car_id = c.id AND c.user_id = $2`,
+      [id, userId]
     );
     return (result.rowCount ?? 0) > 0;
   },

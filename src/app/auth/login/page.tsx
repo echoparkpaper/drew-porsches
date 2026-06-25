@@ -5,8 +5,9 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// Vintage air-cooled 911 in Martini livery (Unsplash, licensed for free use).
 const HERO =
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80';
+  'https://images.unsplash.com/photo-1566238432098-35fc2fa3d908?auto=format&fit=crop&w=1600&q=80';
 
 export default function LoginPage() {
   const router = useRouter();

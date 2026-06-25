@@ -43,11 +43,21 @@ export default async function ModelDetailPage({
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] text-white overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-[20rem] leading-none font-thin text-white/5 select-none whitespace-nowrap">
-            {model.line}
-          </span>
-        </div>
+        {model.image ? (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${model.image})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/40" />
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-[20rem] leading-none font-thin text-white/5 select-none whitespace-nowrap">
+              {model.line}
+            </span>
+          </div>
+        )}
         <div className="relative max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
           <p className="eyebrow text-[#d5001c] mb-4">
             {model.generation} · {model.years}
