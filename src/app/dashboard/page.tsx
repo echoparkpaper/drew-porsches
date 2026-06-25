@@ -29,7 +29,7 @@ export default async function DashboardPage() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[#e3e3e3]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <Link href="/dashboard" className="wordmark text-base">
-            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
+            The Lucurell Collection
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="eyebrow text-[#0a0a0a]">

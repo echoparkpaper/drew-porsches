@@ -69,7 +69,7 @@ export default function NewMaintenanceRecordPage() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[#e3e3e3]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <Link href="/dashboard" className="wordmark text-base">
-            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
+            The Lucurell Collection
           </Link>
           <Link href={`/cars/${carId}`} className="eyebrow text-[#0a0a0a] hover:text-[#d5001c] transition-colors">
             ← Vehicle

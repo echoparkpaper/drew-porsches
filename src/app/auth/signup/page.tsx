@@ -59,7 +59,7 @@ export default function SignupPage() {
       <div className="flex items-center justify-center px-6 py-16 sm:px-12 bg-white order-2 lg:order-1">
         <div className="w-full max-w-sm fade-up">
           <div className="lg:hidden wordmark text-lg mb-12">
-            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
+            The Lucurell Collection
           </div>
 
           <p className="eyebrow text-[#d5001c] mb-3">Request Access</p>
@@ -149,7 +149,7 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
         <div className="relative h-full flex flex-col justify-between p-12 text-white">
           <div className="wordmark text-xl text-right w-full">
-            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
+            The Lucurell Collection
           </div>
           <div>
             <p className="eyebrow text-white/70 mb-3">Your Collection Awaits</p>

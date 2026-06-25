@@ -32,9 +32,9 @@ body {
 }
 
 .wordmark {
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
 /* Subtle image zoom on hover for car cards */
