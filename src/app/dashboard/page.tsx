@@ -29,11 +29,11 @@ export default async function DashboardPage() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[#e3e3e3]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <Link href="/dashboard" className="wordmark text-base">
-            DREW<span className="text-[#d5001c]">.</span>PORSCHES
+            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="eyebrow text-[#0a0a0a]">
-              Garage
+              Collection
             </Link>
             <Link href="/library" className="eyebrow text-[#5b5b5b] hover:text-[#0a0a0a] transition-colors">
               Library
@@ -51,7 +51,7 @@ export default async function DashboardPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
           <p className="eyebrow text-[#d5001c] mb-4">The Collection</p>
           <h1 className="text-4xl lg:text-5xl font-light tracking-tight mb-16">
-            Your Garage
+            Your Collection
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#e3e3e3] border border-[#e3e3e3]">

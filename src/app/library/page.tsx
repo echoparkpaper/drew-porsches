@@ -17,11 +17,11 @@ export default async function LibraryPage() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[#e3e3e3]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <Link href="/dashboard" className="wordmark text-base">
-            DREW<span className="text-[#d5001c]">.</span>PORSCHES
+            THE LUCURELL<span className="text-[#d5001c]">.</span>COLLECTION
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/dashboard" className="eyebrow text-[#5b5b5b] hover:text-[#0a0a0a] transition-colors">
-              Garage
+              Collection
             </Link>
             <Link href="/library" className="eyebrow text-[#0a0a0a]">
               Library

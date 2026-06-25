@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Drew Porsches",
+  title: "The Lucurell Collection",
   description: "A curated automobile collection",
 };
 
