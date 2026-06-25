@@ -5,6 +5,9 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+const HERO =
+  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80';
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -32,81 +35,89 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="text-5xl font-light tracking-tight text-white">
-              DREW
-            </div>
+    <div className="min-h-screen grid lg:grid-cols-2">
+      {/* Visual panel */}
+      <div className="relative hidden lg:block">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${HERO})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
+        <div className="relative h-full flex flex-col justify-between p-12 text-white">
+          <div className="wordmark text-xl">
+            DREW<span className="text-[#d5001c]">.</span>PORSCHES
           </div>
-          <div className="flex justify-center space-x-1">
-            <div className="text-3xl font-light tracking-widest text-red-600">
-              PORSCHES
-            </div>
+          <div>
+            <p className="eyebrow text-white/70 mb-3">The Collection</p>
+            <h1 className="text-4xl font-light leading-tight max-w-md">
+              There is no substitute.
+            </h1>
           </div>
-          <p className="text-sm text-gray-400 tracking-wide">
-            YOUR COLLECTION AWAITS
-          </p>
         </div>
+      </div>
 
-        {/* Form */}
-        <form className="mt-12 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-lg bg-red-900/20 border border-red-600/30 p-4">
-              <p className="text-sm font-medium text-red-400">{error}</p>
-            </div>
-          )}
+      {/* Form panel */}
+      <div className="flex items-center justify-center px-6 py-16 sm:px-12 bg-white">
+        <div className="w-full max-w-sm fade-up">
+          <div className="lg:hidden wordmark text-lg mb-12">
+            DREW<span className="text-[#d5001c]">.</span>PORSCHES
+          </div>
 
-          <div className="space-y-5">
+          <p className="eyebrow text-[#d5001c] mb-3">Members</p>
+          <h2 className="text-3xl font-light tracking-tight mb-10">Sign in</h2>
+
+          <form className="space-y-8" onSubmit={handleSubmit}>
+            {error && (
+              <div className="border-l-2 border-[#d5001c] bg-[#d5001c]/5 px-4 py-3">
+                <p className="text-sm text-[#b00017]">{error}</p>
+              </div>
+            )}
+
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold text-gray-300 tracking-wide mb-3">
-                EMAIL
+              <label htmlFor="email" className="eyebrow text-[#5b5b5b] block mb-3">
+                Email
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 required
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition-colors"
+                className="w-full border-b border-[#e3e3e3] py-2 text-[#0a0a0a] placeholder-[#b8b8b8] focus:outline-none focus:border-[#0a0a0a] transition-colors"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+
             <div>
-              <label htmlFor="password" className="block text-xs font-semibold text-gray-300 tracking-wide mb-3">
-                PASSWORD
+              <label htmlFor="password" className="eyebrow text-[#5b5b5b] block mb-3">
+                Password
               </label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 required
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition-colors"
+                className="w-full border-b border-[#e3e3e3] py-2 text-[#0a0a0a] placeholder-[#b8b8b8] focus:outline-none focus:border-[#0a0a0a] transition-colors"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-          </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full mt-8 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 tracking-wide transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-[#0a0a0a] hover:bg-[#d5001c] text-white eyebrow py-4 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
 
-        {/* Footer */}
-        <div className="pt-8 border-t border-gray-800 text-center">
-          <p className="text-sm text-gray-500">
-            New to Drew Porsches?{' '}
-            <Link href="/auth/signup" className="text-red-600 hover:text-red-500 font-semibold transition-colors">
-              CREATE ACCOUNT
+          <p className="mt-10 text-sm text-[#5b5b5b]">
+            Not yet a member?{' '}
+            <Link href="/auth/signup" className="text-[#0a0a0a] font-medium hover:text-[#d5001c] transition-colors">
+              Request access
             </Link>
           </p>
         </div>

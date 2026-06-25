@@ -1,8 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
+
+const labelCls = 'eyebrow text-[#5b5b5b] block mb-3';
+const inputCls =
+  'w-full border-b border-[#e3e3e3] py-2 text-[#0a0a0a] placeholder-[#b8b8b8] focus:outline-none focus:border-[#0a0a0a] transition-colors bg-transparent';
 
 export default function NewMaintenanceRecordPage() {
   const router = useRouter();
@@ -53,6 +57,7 @@ export default function NewMaintenanceRecordPage() {
       }
 
       router.push(`/cars/${carId}`);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       setIsLoading(false);
@@ -60,93 +65,67 @@ export default function NewMaintenanceRecordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Add Maintenance Record</h1>
-          <a href={`/cars/${carId}`} className="text-blue-600 hover:text-blue-700">
-            Back to Car
-          </a>
+    <div className="min-h-screen bg-white">
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[#e3e3e3]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+          <Link href="/dashboard" className="wordmark text-base">
+            DREW<span className="text-[#d5001c]">.</span>PORSCHES
+          </Link>
+          <Link href={`/cars/${carId}`} className="eyebrow text-[#0a0a0a] hover:text-[#d5001c] transition-colors">
+            ← Vehicle
+          </Link>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="rounded-md bg-red-50 p-4">
-                <p className="text-sm font-medium text-red-800">{error}</p>
-              </div>
-            )}
+      <main className="max-w-2xl mx-auto px-6 lg:px-10 py-16">
+        <p className="eyebrow text-[#d5001c] mb-4">Service</p>
+        <h1 className="text-4xl font-light tracking-tight mb-12">Add a Record</h1>
 
+        <form onSubmit={handleSubmit} className="space-y-10">
+          {error && (
+            <div className="border-l-2 border-[#d5001c] bg-[#d5001c]/5 px-4 py-3">
+              <p className="text-sm text-[#b00017]">{error}</p>
+            </div>
+          )}
+
+          <div>
+            <label className={labelCls}>Service Date *</label>
+            <input type="date" name="serviceDate" value={formData.serviceDate} onChange={handleChange} className={`${inputCls} cursor-pointer`} />
+          </div>
+
+          <div>
+            <label className={labelCls}>Description *</label>
+            <textarea name="description" value={formData.description} onChange={handleChange} rows={3} className={inputCls} placeholder="Major service, brake replacement, detailing…" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Service Date *</label>
-              <input
-                type="date"
-                name="serviceDate"
-                value={formData.serviceDate}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-              />
+              <label className={labelCls}>Cost</label>
+              <input type="number" name="cost" value={formData.cost} onChange={handleChange} className={inputCls} min="0" step="0.01" placeholder="0.00" />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-700">Description *</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="e.g., Oil change, tire rotation, brake service"
-              />
+              <label className={labelCls}>Mileage at Service</label>
+              <input type="number" name="mileageAtService" value={formData.mileageAtService} onChange={handleChange} className={inputCls} min="0" placeholder="0" />
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Cost</label>
-                <input
-                  type="number"
-                  name="cost"
-                  value={formData.cost}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                  min="0"
-                  step="0.01"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Mileage at Service</label>
-                <input
-                  type="number"
-                  name="mileageAtService"
-                  value={formData.mileageAtService}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                  min="0"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="inline-flex justify-center rounded-md bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {isLoading ? 'Saving...' : 'Add Record'}
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="inline-flex justify-center rounded-md bg-gray-200 py-2 px-4 text-sm font-medium text-gray-800 hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="flex items-center gap-8 pt-2">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="eyebrow bg-[#0a0a0a] hover:bg-[#d5001c] text-white px-8 py-4 transition-colors duration-300 disabled:opacity-50"
+            >
+              {isLoading ? 'Saving…' : 'Add Record'}
+            </button>
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="eyebrow text-[#5b5b5b] hover:text-[#0a0a0a] transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </main>
     </div>
   );
